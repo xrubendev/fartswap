@@ -12,9 +12,11 @@ import ClientOnly from '@/components/ClientOnly';
 require('@solana/wallet-adapter-react-ui/styles.css');
 
 export function WalletContextProvider({ children }: { children: React.ReactNode }) {
+  // RPC endpoint desde el archivo rpc.ts
   const endpoint = useMemo(() => getRpcEndpoint(), []);
   const connection = useMemo(() => new Connection(endpoint, 'confirmed'), [endpoint]);
   
+  // Wallets disponibles
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter(),
@@ -27,7 +29,9 @@ export function WalletContextProvider({ children }: { children: React.ReactNode 
     <ClientOnly>
       <ConnectionProvider endpoint={endpoint}>
         <WalletProvider wallets={wallets} autoConnect>
-          <WalletModalProvider>{children}</WalletModalProvider>
+          <WalletModalProvider>
+            {children}
+          </WalletModalProvider>
         </WalletProvider>
       </ConnectionProvider>
     </ClientOnly>
